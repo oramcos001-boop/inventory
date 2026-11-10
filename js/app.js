@@ -1,4 +1,4 @@
-const GITHUB_TOKEN = "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";
+const TOKEN = "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";
 
 const productsContainer = document.getElementById("products");
 const statusElement = document.getElementById("status");
@@ -159,7 +159,7 @@ async function saveChanges() {
         }
     }
 
-    if (!GITHUB_TOKEN.trim() || GITHUB_TOKEN === "PON_TU_TOKEN_AQUI") {
+    if (!TOKEN.trim() || TOKEN === "PON_TU_TOKEN_AQUI") {
         statusElement.textContent = "Falta el token de GitHub.";
         return;
     }
@@ -221,7 +221,7 @@ async function saveChanges() {
                 await saveInventory(
                     current.data,
                     current.sha,
-                    GITHUB_TOKEN
+                    TOKEN
                 );
                 updated = true;
                 break;
