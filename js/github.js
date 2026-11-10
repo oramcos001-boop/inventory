@@ -63,8 +63,9 @@ async function getInventory(token) {
     }
 
     if (!response.ok) {
+        const error = await response.json();
         throw new Error(
-            `Error leyendo inventario: ${response.status}`
+            `Error leyendo inventario: ${response.status} - ${error.message}`
         );
     }
 
