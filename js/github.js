@@ -41,14 +41,10 @@ function decodeBase64(base64) {
 // LEER INVENTARIO
 // --------------------------------------
 
-async function getInventory(token) {
+async function getInventory() {
     const headers = {
         Accept: "application/vnd.github+json"
     };
-
-    if (token) {
-        headers.Authorization = `Bearer ${token}`;
-    }
 
     const response = await fetch(
         `${API}?ref=${CONFIG.branch}`,
