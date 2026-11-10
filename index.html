@@ -35,6 +35,48 @@
         </section>
     </main>
 
+    <script src="js/github.js?v=4"></script>
+    <script src="js/app.js?v=4"></script>
+
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Inventario</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <main class="container">
+        <header>
+            <h1>Inventario</h1>
+            <div class="header-actions">
+                <button id="reload">Actualizar</button>
+                <button id="save-changes" disabled>Guardar cambios</button>
+            </div>
+        </header>
+
+        <p id="status">Cargando inventario...</p>
+
+        <label class="search">
+            <span>Buscar objeto</span>
+            <input
+                id="search"
+                type="search"
+                placeholder="Nombre, ID, motivo..."
+                autocomplete="off"
+            >
+        </label>
+
+        <section id="products">
+            <!-- Los objetos aparecerán aquí -->
+        </section>
+    </main>
+
     <script src="js/github.js?v=3"></script>
     <script src="js/app.js?v=3"></script>
 
