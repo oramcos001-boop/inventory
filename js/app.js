@@ -1,5 +1,3 @@
-const GITHUB_TOKEN = "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";
-
 const productsContainer = document.getElementById("products");
 const statusElement = document.getElementById("status");
 const reloadButton = document.getElementById("reload");
@@ -159,8 +157,9 @@ async function saveChanges() {
         }
     }
 
-    if (!GITHUB_TOKEN.trim() || GITHUB_TOKEN === "PON_TU_TOKEN_AQUI") {
-        statusElement.textContent = "Falta el token de GitHub.";
+    const token = prompt("Introduce tu token de GitHub para guardar:");
+    if (!token?.trim()) {
+        statusElement.textContent = "Guardado cancelado.";
         return;
     }
 
@@ -176,7 +175,7 @@ async function saveChanges() {
         let updated = false;
 
         for (let attempt = 0; attempt < 3; attempt++) {
-            const current = await getInventory(GITHUB_TOKEN);
+            const current = await getInventory();
             let hasChanges = false;
 
             for (const product of current.data.productos) {
@@ -221,7 +220,7 @@ async function saveChanges() {
                 await saveInventory(
                     current.data,
                     current.sha,
-                    GITHUB_TOKEN
+                    token.trim()
                 );
                 updated = true;
                 break;
@@ -261,7 +260,7 @@ async function loadInventory() {
     try {
         statusElement.textContent = "Consultando GitHub...";
 
-        const inventory = await getInventory(GITHUB_TOKEN);
+        const inventory = await getInventory();
         inventoryProducts = inventory.data?.productos || [];
         renderProducts(inventoryProducts);
     } catch (error) {
