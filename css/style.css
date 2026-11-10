@@ -1,0 +1,126 @@
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 30px;
+    font-family: sans-serif;
+    background: #f4f4f4;
+    color: #222;
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.header-actions {
+    display: flex;
+    gap: 8px;
+}
+
+h1 {
+    font-size: 28px;
+}
+
+#status {
+    padding: 12px;
+    background: white;
+    border-radius: 8px;
+}
+
+.search {
+    display: grid;
+    gap: 8px;
+    margin-top: 16px;
+    font-weight: bold;
+}
+
+.search input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #bbb;
+    border-radius: 6px;
+    font: inherit;
+}
+
+#products {
+    margin-top: 20px;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.inventory-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.inventory-table th,
+.inventory-table td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    vertical-align: middle;
+}
+
+.inventory-table th {
+    background: #eee;
+    white-space: nowrap;
+    font-size: 14px;
+}
+
+.inventory-table td:nth-child(2),
+.inventory-table td:nth-child(3) {
+    white-space: nowrap;
+}
+
+.inventory-table input {
+    width: 100px;
+    padding: 9px;
+    font-size: 16px;
+}
+
+button {
+    border: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    background: #222;
+    color: white;
+    cursor: pointer;
+}
+
+button:disabled {
+    opacity: 0.5;
+    cursor: wait;
+}
+
+@media (max-width: 520px) {
+    body {
+        padding: 18px;
+    }
+
+    header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+
+.empty {
+    padding: 30px;
+    text-align: center;
+    color: #777;
+}
