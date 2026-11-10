@@ -176,7 +176,7 @@ async function saveChanges() {
         let updated = false;
 
         for (let attempt = 0; attempt < 3; attempt++) {
-            const current = await getInventory(GITHUB_TOKEN);
+            const current = await getInventory();
             let hasChanges = false;
 
             for (const product of current.data.productos) {
@@ -261,7 +261,7 @@ async function loadInventory() {
     try {
         statusElement.textContent = "Consultando GitHub...";
 
-        const inventory = await getInventory(GITHUB_TOKEN);
+        const inventory = await getInventory();
         inventoryProducts = inventory.data?.productos || [];
         renderProducts(inventoryProducts);
     } catch (error) {
