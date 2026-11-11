@@ -47,7 +47,7 @@ async function getInventory() {
     };
 
     const response = await fetch(
-        `${API}?ref=${CONFIG.branch}`,
+        `${API}?ref=${CONFIG.branch}&_=${Date.now()}`,
         { headers, cache: "no-store" }
     );
 
@@ -97,7 +97,7 @@ async function saveInventory(data, sha, token) {
     };
 
     if (token) {
-        headers.Authorization = `Bearer ${token}`;
+        headers.Authorization = "Bearer " + token;
     }
 
     const response = await fetch(API, {
@@ -108,6 +108,18 @@ async function saveInventory(data, sha, token) {
 
     if (!response.ok) {
         const error = await response.json();
+
+        if (response.status === 401) {
+            throw new Error(
+                "Token inválido o caducado (401 Bad credentials). Configura un token vigente con acceso al repositorio."
+            );
+        }
+
+        if (response.status === 403) {
+            throw new Error(
+                `GitHub denegó el acceso (403): ${error.message}. Comprueba que el token tenga permiso Contents: Read and write para el repositorio.`
+            );
+        }
 
         throw new Error(
             `Error guardando: ${response.status} - ${error.message}`
