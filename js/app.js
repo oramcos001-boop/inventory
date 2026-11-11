@@ -1,4 +1,5 @@
-const TOKEN = "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";
+
+const TOKEN = "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";
 
 const productsContainer = document.getElementById("products");
 const statusElement = document.getElementById("status");
@@ -7,6 +8,10 @@ const saveChangesButton = document.getElementById("save-changes");
 const searchInput = document.getElementById("search");
 let inventoryProducts = [];
 const pendingQuantities = new Map();
+
+function wait(milliseconds) {
+    return new Promise(resolve => setTimeout(resolve, milliseconds));
+}
 
 
 // --------------------------------------
@@ -160,7 +165,8 @@ async function saveChanges() {
     }
 
     if (!TOKEN.trim() || TOKEN === "PON_TU_TOKEN_AQUI") {
-        statusElement.textContent = "Falta el token de GitHub.";
+        statusElement.textContent =
+            "Configura un token de GitHub vigente en la variable TOKEN de js/app.js.";
         return;
     }
 
@@ -171,6 +177,8 @@ async function saveChanges() {
         input.disabled = true;
     });
     statusElement.textContent = "Guardando cambios...";
+    let saveError;
+    let saveAccepted = false;
 
     try {
         let updated = false;
@@ -223,6 +231,7 @@ async function saveChanges() {
                     current.sha,
                     TOKEN
                 );
+                saveAccepted = true;
                 updated = true;
                 break;
             } catch (error) {
@@ -242,18 +251,56 @@ async function saveChanges() {
             );
         }
 
+        let confirmed = false;
+        for (let attempt = 0; attempt < 4; attempt++) {
+            const savedInventory = await getInventory();
+            confirmed = [...pendingQuantities].every(([id, rawValue]) => {
+                const savedProduct = savedInventory.data.productos.find(
+                    product => product.id === id
+                );
+                return savedProduct &&
+                    Number(savedProduct.cantidad) === Number(rawValue);
+            });
+
+            if (confirmed) {
+                break;
+            }
+
+            if (attempt < 3) {
+                await wait(500 * (attempt + 1));
+            }
+        }
+
+        if (!confirmed) {
+            if (saveAccepted) {
+                throw new Error(
+                    "GitHub aceptó el guardado, pero la lectura del inventario todavía no refleja el cambio. Tus cambios siguen pendientes; pulsa «Guardar cambios» para volver a comprobar."
+                );
+            }
+
+            throw new Error(
+                "GitHub todavía no refleja las cantidades solicitadas. Tus cambios siguen pendientes."
+            );
+        }
+
         pendingQuantities.clear();
         updateSaveButton();
-        statusElement.textContent = "Cambios guardados correctamente.";
-        await loadInventory();
     } catch (error) {
-        statusElement.textContent = "Error: " + error.message;
+        saveError = error;
     } finally {
         saveChangesButton.disabled = pendingQuantities.size === 0;
         reloadButton.disabled = false;
         searchInput.disabled = false;
         renderProducts(inventoryProducts);
     }
+
+    if (saveError) {
+        statusElement.textContent = "Error: " + saveError.message;
+        return;
+    }
+
+    await loadInventory();
+    statusElement.textContent = "Cambios guardados correctamente.";
 }
 
 
